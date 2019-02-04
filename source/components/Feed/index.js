@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 // Components
+import { withProfile } from 'components/HOC/withProfile';
 import StatusBar from 'components/StatusBar';
 import Composer from 'components/Composer';
 import Post from 'components/Post';
@@ -12,26 +13,18 @@ import Spinner from 'components/Spinner';
 import Styles from './styles.m.css';
 import { getUniqueID, delay } from 'instruments';
 
+@withProfile
 export default class Feed extends Component {
-    constructor(props) {
-        super(props);
-
-        this._createPost = this._createPost.bind(this);
-        this._setPostsFetchingState = this._setPostsFetchingState.bind(this);
-        this._likePost = this._likePost.bind(this);
-        this._removePost = this._removePost.bind(this);
-    }
-
     state = {
         posts:           [{id: '123', comment: 'Hi There!', created: 1526825076849, likes: []}, {id: '456', comment: 'Hello :)', created: 1526825076855, likes: [] }],
         isPostsFetching: false,
     };
 
-    _setPostsFetchingState(state) {
+    _setPostsFetchingState = (state) => {
         this.setState({isPostsFetching: state});
-    }
+    };
 
-    async _createPost (comment) {
+    _createPost = async (comment) => {
         this._setPostsFetchingState(true);
 
         const post = {
@@ -47,9 +40,9 @@ export default class Feed extends Component {
             posts:           [ post, ...posts ],
             isPostsFetching: false,
         }));
-    }
+    };
 
-    async _likePost (id) {
+    _likePost = async (id) => {
         const {currentUserFirstName, currentUserLastName } = this.props;
         const {posts} = this.state;
 
@@ -78,22 +71,20 @@ export default class Feed extends Component {
             posts:           newPosts,
             isPostsFetching: false,
         });
-    }
+    };
 
-    async _removePost (id) {
+    _removePost = async (id) => {
         const {posts} = this.state;
 
         this._setPostsFetchingState(true);
 
         await delay(1200);
 
-        const newPosts = posts.filter((post) => post.id !== id);
-
         this.setState({
-            posts:           newPosts,
+            posts:           posts.filter((post) => post.id !== id),
             isPostsFetching: false,
         });
-    }
+    };
 
     render() {
         const { posts, isPostsFetching } = this.state;
