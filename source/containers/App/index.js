@@ -4,24 +4,28 @@ import { hot } from 'react-hot-loader';
 
 // Components
 import Feed from 'components/Feed/';
+import Catcher from 'components/Catcher/';
 import { Provider } from 'components/HOC/withProfile';
+
 
 // Instruments
 import avatar from 'theme/assets/lisa.png';
 
 const options = {
     avatar,
-    currentUserFirstName: 'Lisa',
-    currentUserLastName:  'Simpson',
+    currentUserFirstName: 'Владислав',
+    currentUserLastName:  'Кулик',
 };
 
 @hot(module)
 export default class App extends Component {
     render() {
         return (
-            <Provider value = { options } >
-                <Feed />
-            </Provider>
+            <Catcher>
+                <Provider value = { options } >
+                    <Feed />
+                </Provider>
+            </Catcher>
         );
     }
 }

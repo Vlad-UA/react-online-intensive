@@ -5,7 +5,7 @@ import {string, number, func, array } from 'prop-types';
 
 // Components
 import Like from 'components/Like';
-import { withProfile } from 'components/HOC/withProfile';
+import {withProfile} from '../HOC/withProfile';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -34,21 +34,27 @@ export default class Post extends Component {
             id,
             likes,
             avatar,
+            firstName,
+            lastName,
             currentUserFirstName,
             currentUserLastName,
         } = this.props;
 
+        const isRemovable = currentUserFirstName === firstName && currentUserLastName === lastName;
+
         return (
             <section className = { Styles.post }>
-                <span
-                    className = { Styles.cross }
-                    onClick = { this._removePost }
-                />
+                {isRemovable
+                    && <span
+                        className = { Styles.cross }
+                        onClick = { this._removePost }
+                    />}
+
                 <img
                     alt = 'avatar'
                     src = { avatar }
                 />
-                <a>{`${currentUserFirstName} ${currentUserLastName}`}</a>
+                <a>{`${firstName} ${lastName}`}</a>
                 <time>{moment(created)
                     .format('MMMM D h:mm:ss a')}
                 </time>
