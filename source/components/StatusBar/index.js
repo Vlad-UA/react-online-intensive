@@ -1,6 +1,8 @@
 // Core
 import React, { Component } from 'react';
 import cx from 'classnames';
+import { Transition} from 'react-transition-group';
+import { fromTo } from 'gsap';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
@@ -9,9 +11,6 @@ import { withProfile } from 'components/HOC/withProfile';
 import Styles from './styles.m.css';
 import {socket} from 'socket/init';
 
-const SOCKET_CONNECT = 'connect';
-const SOCKET_DISCONNECT = 'disconnect';
-
 @withProfile
 export default class StatusBar extends Component {
     state = {
@@ -19,13 +18,13 @@ export default class StatusBar extends Component {
     };
 
     componentDidMount() {
-        socket.on(SOCKET_CONNECT, () => {
+        socket.on(this.SOCKET_CONNECT, () => {
             this.setState({
                 online: true,
             });
         });
 
-        socket.on(SOCKET_DISCONNECT, () => {
+        socket.on(this.SOCKET_DISCONNECT, () => {
             this.setState({
                 online: false,
             });
@@ -33,9 +32,16 @@ export default class StatusBar extends Component {
     }
 
     componentWillUnmount() {
-        socket.removeListener(SOCKET_CONNECT);
-        socket.removeListener(SOCKET_DISCONNECT);
+        socket.removeListener(this.SOCKET_CONNECT);
+        socket.removeListener(this.SOCKET_DISCONNECT);
     }
+
+    SOCKET_CONNECT = 'connect';
+    SOCKET_DISCONNECT = 'disconnect';
+
+    _animateStatusBarEnter = (statusBar) => {
+        fromTo(statusBar, 1, {opacity: 0}, {opacity: 1});
+    };
 
     render() {
         const {currentUserFirstName, currentUserLastName, avatar} = this.props;
@@ -49,21 +55,27 @@ export default class StatusBar extends Component {
         const statusMessage = online ? 'Online' : 'Offline';
 
         return (
-            <section className = { Styles.statusBar }>
-                <div className = { statusStyle }>
-                    <div>{statusMessage}</div>
-                    <span />
-                </div>
-                <button>
-                    <img
-                        alt = 'avatar'
-                        src = { avatar }
-                    />
-                    <span>{currentUserFirstName}</span>
-                            &nbsp;
-                    <span>{currentUserLastName}</span>
-                </button>
-            </section>
+            <Transition
+                appear
+                in
+                timeout = { 1000 }
+                onEnter = { this._animateStatusBarEnter }>
+                <section className = { Styles.statusBar }>
+                    <div className = { statusStyle }>
+                        <div>{statusMessage}</div>
+                        <span />
+                    </div>
+                    <button>
+                        <img
+                            alt = 'avatar'
+                            src = { avatar }
+                        />
+                        <span>{currentUserFirstName}</span>
+                        &nbsp;
+                        <span>{currentUserLastName}</span>
+                    </button>
+                </section>
+            </Transition>
         );
     }
 }
