@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from 'react';
 import { Transition, CSSTransition, TransitionGroup } from 'react-transition-group';
-import { fromTo } from 'gsap';
+import {fromTo, TimelineLite} from 'gsap';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
@@ -11,6 +11,7 @@ import Post from 'components/Post';
 import Spinner from 'components/Spinner';
 import Catcher from 'components/Catcher/';
 import Postman from 'components/Postman';
+import Counter from 'components/Counter';
 
 // Instruments
 import Styles from './styles.m.css';
@@ -153,6 +154,18 @@ export default class Feed extends Component {
         fromTo(composer, 1, {opacity: 0, rotationX: 50}, {opacity: 1, rotationX: 0});
     };
 
+    _animatePostmanEnter = (composer) => {
+        let timeLine = new TimelineLite();
+        timeLine.to(composer, 0, {
+            x: 250,
+        }).to(composer, 1, {
+            x: 0,
+        })
+            .to(composer, 1, {
+                x: 300,
+            }, '+=4');
+    };
+
     render() {
         const { posts, isPostsFetching } = this.state;
 
@@ -171,7 +184,6 @@ export default class Feed extends Component {
                 }}>
                 <Catcher>
                     <Post
-                        key = { post.id }
                         { ...post }
                         _likePost = { this._likePost }
                         _removePost = { this._removePost }
@@ -189,9 +201,16 @@ export default class Feed extends Component {
                     in
                     timeout = { 4000 }
                     onEnter = { this._animateComposerEnter }>
-                    <Composer _createPost = { this._createPost } />
+                    <Composer createPost = { this._createPost } />
                 </Transition>
-                <Postman/>
+                <Transition
+                    appear
+                    in
+                    timeout = { 0 }
+                    onEnter = { this._animatePostmanEnter }>
+                    <Postman/>
+                </Transition>
+                <Counter count = { postsJSX.length } />
                 <TransitionGroup>{postsJSX}</TransitionGroup>
             </section>
         );

@@ -11,7 +11,7 @@ import Styles from './styles.m.css';
 @withProfile
 export default class Composer extends Component {
   static propTypes = {
-      _createPost: PropTypes.func.isRequired,
+      createPost: PropTypes.func.isRequired,
   };
 
     state = {
@@ -34,7 +34,7 @@ export default class Composer extends Component {
             return null;
         }
 
-        this.props._createPost(comment);
+        this.props.createPost(comment);
 
         this.setState({comment: ''});
     };
