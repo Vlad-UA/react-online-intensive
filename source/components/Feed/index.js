@@ -4,8 +4,6 @@ import { Transition, CSSTransition, TransitionGroup } from 'react-transition-gro
 import {fromTo, TimelineLite} from 'gsap';
 
 // Components
-import { withProfile } from 'components/HOC/withProfile';
-import StatusBar from 'components/StatusBar';
 import Composer from 'components/Composer';
 import Post from 'components/Post';
 import Spinner from 'components/Spinner';
@@ -18,7 +16,7 @@ import Styles from './styles.m.css';
 import { api, TOKEN, GROUP_ID } from 'config/api';
 import {socket} from 'socket/init';
 
-@withProfile
+
 export default class Feed extends Component {
     state = {
         posts:           [],
@@ -195,7 +193,6 @@ export default class Feed extends Component {
         return (
             <section className = { Styles.feed }>
                 <Spinner isSpinning = { isPostsFetching } />
-                <StatusBar />
                 <Transition
                     appear
                     in

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`composer component: composer component should correspond to its snapshot counterpart 1`] = `
+<Composer
+  avatar=""
+  createPost={[MockFunction]}
+  currentUserFirstName="Vlad"
+>
+  <section
+    className="composer"
+  >
+    <img
+      alt="avatar"
+      src=""
+    />
+    <form
+      onSubmit={[MockFunction]}
+    >
+      <textarea
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="What's on your mind, Vlad?"
+        value=""
+      />
+      <input
+        type="submit"
+        value="Post"
+      />
+    </form>
+  </section>
+</Composer>
+`;

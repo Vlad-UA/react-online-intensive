@@ -123,4 +123,8 @@ describe('composer component:', () => {
         expect(_submitCommentSpy).toHaveBeenCalledTimes(1);
         expect(_submitCommentSpy).toHaveBeenCalledTimes(1);
     });
+
+    test('composer component should correspond to its snapshot counterpart', () => {
+        expect(result).toMatchSnapshot();
+    });
 });
