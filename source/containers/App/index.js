@@ -38,13 +38,21 @@ class App extends Component {
         history.push('/feed');
     };
 
+    userLogout = () => {
+        const {history} = this.props;
+
+        options.isAuthenticated = false;
+        localStorage.setItem(localStorageConstants.IS_AUTHENTICATED, options.isAuthenticated);
+        history.push('/login');
+    };
+
     render() {
-        options.isAuthenticated = !!localStorage.getItem(localStorageConstants.IS_AUTHENTICATED);
+        options.isAuthenticated = localStorage.getItem(localStorageConstants.IS_AUTHENTICATED) === 'true';
 
         return (
             <Catcher>
                 <Provider value = { options } >
-                    <StatusBar />
+                    <StatusBar handleLogout = { this.userLogout } />
                     <Switch>
                         <Route
                             exact
